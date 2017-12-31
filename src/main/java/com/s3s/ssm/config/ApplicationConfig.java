@@ -16,53 +16,20 @@
 
 package com.s3s.ssm.config;
 
-import java.awt.Image;
-import java.awt.Toolkit;
-
-import javax.swing.UIManager;
-
-import org.jdesktop.application.SingleFrameApplication;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-import com.s3s.ssm.view.LookAndFeelUtil;
-import com.s3s.ssm.view.LookAndFeelUtil.LookAndFeel;
-import com.s3s.ssm.view.ServerView;
 
 @Configuration
 @EnableAutoConfiguration
 @Import({PosServiceConfig.class, ManageServiceConfig.class, ReportServiceConfig.class,
     DashboardServiceConfig.class, TimelineServiceConfig.class, ServiceCacheConfig.class})
 @EnableJpaRepositories(basePackages = "com.s3s.ssm.repo")
-public class ApplicationConfig extends SingleFrameApplication {
-  public final static Image APP_IMAGE = Toolkit.getDefaultToolkit().getImage(
-          ApplicationConfig.class.getResource("/server.png"));
-
+public class ApplicationConfig {
   public static void main(String[] args) {
-    launch(ApplicationConfig.class, args);
+	  SpringApplication.run(ApplicationConfig.class, args);
   }
 
-  @Override
-  protected void initialize(String[] args) {
-    setLooknFeel();
-  }
-
-  private void setLooknFeel() {
-    LookAndFeelUtil.installLF(LookAndFeel.SYNTHETICA_SKY_METALLIC);
-    LookAndFeelUtil.setLF(LookAndFeel.SYNTHETICA_SKY_METALLIC);
-    UIManager.put("TabbedPane.background", UIManager.get("Panel.background"));
-    UIManager.put("Synthetica.tabbedPane.keepOpacity", true);
-    UIManager.put("Synthetica.dialog.icon.enabled", true);
-
-  }
-
-  @Override
-  protected void startup() {
-    show(new ServerView(this));
-    getMainFrame().setTitle("Server");
-    getMainFrame().setIconImage(APP_IMAGE);
-    getMainFrame().toFront();
-  }
 }

@@ -2,18 +2,36 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.s3s</groupId>
-	<artifactId>ssm</artifactId>
+	<groupId>com.s3s.ssm</groupId>
+	<artifactId>ssm-core-legacy</artifactId>
 	<version>1.0</version>
-	</parent>
-	<artifactId>ssm-spring-boot-service</artifactId>
-	<name>SSM Spring Boot Service</name>
-	<description>SSM Spring Boot Service</description>
+	<name>SSM Core Legacy Service</name>
+	<description>SSM Core Legacy Service</description>
 	<packaging>jar</packaging>
+	
 	<properties>
 		<java.version>1.8</java.version>
+		<hessian.version>4.0.38</hessian.version>
+		<querydsl.version>3.6.0</querydsl.version>
+		<ehcache.version>2.8.2</ehcache.version>
+		<myMavenRepo.read.url>https://mymavenrepo.com/repo/0gYeR1uVbGBd8IBUlAOb/</myMavenRepo.read.url>
+		<myMavenRepo.write.url>https://mymavenrepo.com/repo/EsiHd95I3nhSKhiViDip/</myMavenRepo.write.url>
+    	<commons-lang3.version>3.3.2</commons-lang3.version>
 	</properties>
-
+	
+	<repositories>
+        <repository>
+            <id>myMavenRepo.read</id>
+            <url>${myMavenRepo.read.url}</url>
+        </repository>
+    </repositories>
+	
+	<parent>
+    	<groupId>org.springframework.boot</groupId>
+    	<artifactId>spring-boot-starter-parent</artifactId>
+    	<version>1.2.3.RELEASE</version>
+	</parent>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -52,121 +70,58 @@
 		<dependency>
 			<groupId>com.caucho</groupId>
 			<artifactId>hessian</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.s3s</groupId>
-			<artifactId>ssm-service-api</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<version>${hessian.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>
 			<artifactId>querydsl-core</artifactId>
+			<version>${querydsl.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
+			<version>${querydsl.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-email</artifactId>
+			<version>${querydsl.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
+			<version>${ehcache.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-test-mockito-junit4</artifactId>
-			<scope>test</scope>
+			<groupId>com.s3s</groupId>
+			<artifactId>ssm-service-api</artifactId>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.jdesktop.bsaf</groupId>
-			<artifactId>bsaf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>jyloo</groupId>
-			<artifactId>synthetica</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>jyloo</groupId>
-			<artifactId>syntheticaSkyMetallic</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>jyloo</groupId>
-			<artifactId>syntheticaAddons</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>jyloo</groupId>
-			<artifactId>syntheticaAddonsWithThemes</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.swinglabs.swingx</groupId>
-			<artifactId>swingx-all</artifactId>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>appassembler-maven-plugin</artifactId>
-				<version>1.8.1</version>
-				<executions>
-					<execution>
-						<id>generate-jsw-scripts</id>
-						<phase>package</phase>
-						<goals>
-							<goal>generate-daemons</goal>
-						</goals>
-						<configuration>
-							<repositoryLayout>flat</repositoryLayout>
-							<includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-							<daemons>
-								<daemon>
-									<id>spring-boot-server</id>
-									<!-- the next line is added by default if you don't have wrapperMainClass's 
-										setting -->
-									<!-- <wrapperMainClass>com.s3s.ssm.config.ApplicationConfig</wrapperMainClass> -->
-									<mainClass>org.codehaus.mojo.SomeMainClass</mainClass>
-									<!-- <commandLineArguments> <commandLineArgument>start</commandLineArgument> 
-										</commandLineArguments> -->
-									<platforms>
-										<platform>jsw</platform>
-									</platforms>
-								</daemon>
-							</daemons>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>com.s3s.ssm.config.ApplicationConfig</mainClass>
-					<layout>ZIP</layout>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>1.2.3.RELEASE</version>
+			    <configuration>
+			        <mainClass>com.s3s.ssm.config.ApplicationConfig</mainClass>
+			    </configuration>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>repackage</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+            </plugin>
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
 				<artifactId>maven-apt-plugin</artifactId>
@@ -186,37 +141,17 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<configuration>
-							<tasks>
-								<!-- Place any ant task here. You can add anything you can add between 
-									<target> and </target> in a build.xml. -->
-								<copy file="target/ssm-spring-boot-service-1.0-SNAPSHOT.jar"
-									todir="install" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>1.2.3.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	
+	<distributionManagement>
+        <repository>
+            <id>myMavenRepo.write</id>
+            <url>${myMavenRepo.write.url}</url>
+        </repository>
+        <snapshotRepository>
+            <id>myMavenRepo.write</id>
+            <url>${myMavenRepo.write.url}</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

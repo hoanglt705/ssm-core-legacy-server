@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.s3s.ssm.dto.PaymentContentDto;
 import com.s3s.ssm.repo.PaymentContentRepository;
-import com.s3s.ssm.repo.PaymentRepository;
 import com.sunrise.xdoc.entity.finance.PaymentContent;
 
 @Component("paymentContentService")
@@ -35,14 +34,12 @@ import com.sunrise.xdoc.entity.finance.PaymentContent;
 public class PaymentContentServiceImpl implements IPaymentContentService {
   @Autowired
   private PaymentContentRepository paymentContentRepository;
-  @Autowired
-  private PaymentRepository paymentRepository;
 
   @Override
   public void saveOrUpdate(PaymentContentDto dto) {
     PaymentContent paymentContent = null;
     if (dto.getId() != null) {
-      paymentContent = paymentContentRepository.findOne(dto.getId());
+      paymentContent = paymentContentRepository.findById(dto.getId()).get();
     }
     if (paymentContent == null) {
       paymentContent = new PaymentContent();
@@ -67,8 +64,8 @@ public class PaymentContentServiceImpl implements IPaymentContentService {
 
   @Override
   public PaymentContentDto findOne(Long id) {
-    if (paymentContentRepository.exists(id)) {
-      PaymentContent paymentContent = paymentContentRepository.findOne(id);
+    if (paymentContentRepository.existsById(id)) {
+      PaymentContent paymentContent = paymentContentRepository.findById(id).get();
       return transformToDto(paymentContent);
     }
     return null;
@@ -82,8 +79,8 @@ public class PaymentContentServiceImpl implements IPaymentContentService {
   @Override
   public void inactivate(long[] ids) {
     for (long areaId : ids) {
-      if (paymentContentRepository.exists(areaId)) {
-        PaymentContent paymentContent = paymentContentRepository.findOne(areaId);
+      if (paymentContentRepository.existsById(areaId)) {
+        PaymentContent paymentContent = paymentContentRepository.findById(areaId).get();
         paymentContent.setActive(false);
         paymentContentRepository.save(paymentContent);
 
@@ -99,8 +96,8 @@ public class PaymentContentServiceImpl implements IPaymentContentService {
   @Override
   public void activate(long[] ids) {
     for (long id : ids) {
-      if (paymentContentRepository.exists(id)) {
-        PaymentContent paymentContent = paymentContentRepository.findOne(id);
+      if (paymentContentRepository.existsById(id)) {
+        PaymentContent paymentContent = paymentContentRepository.findById(id).get();
         paymentContent.setActive(true);
         paymentContentRepository.save(paymentContent);
 

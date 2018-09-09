@@ -41,7 +41,7 @@ public class FoodServiceImpl implements IFoodService {
   public void saveOrUpdate(FoodDto dto) {
     Food area = null;
     if (dto.getId() != null) {
-      area = foodRepository.findOne(dto.getId());
+      area = foodRepository.findById(dto.getId()).get();
     }
     if (area == null) {
       area = new Food();
@@ -57,8 +57,8 @@ public class FoodServiceImpl implements IFoodService {
 
   @Override
   public FoodDto findOne(Long id) {
-    if (foodRepository.exists(id)) {
-      Food area = foodRepository.findOne(id);
+    if (foodRepository.existsById(id)) {
+      Food area = foodRepository.findById(id).get();
       return transformToDto(area);
     }
     return null;
@@ -72,8 +72,8 @@ public class FoodServiceImpl implements IFoodService {
   @Override
   public void inactivate(long[] ids) {
     for (long id : ids) {
-      if (foodRepository.exists(id)) {
-        Food area = foodRepository.findOne(id);
+    if (foodRepository.existsById(id)) {
+    	Food area = foodRepository.findById(id).get();
         area.setActive(false);
         foodRepository.save(area);
       }
@@ -83,11 +83,11 @@ public class FoodServiceImpl implements IFoodService {
   @Override
   public void activate(long[] ids) {
     for (long id : ids) {
-      Food area = foodRepository.findOne(id);
-      area.setActive(true);
-      foodRepository.save(area);
+        if (foodRepository.existsById(id)) {
+        	Food area = foodRepository.findById(id).get();
+        	foodRepository.save(area);
+        }
     }
-
   }
 
   protected FoodDto transformToDto(Food food) {
@@ -111,12 +111,12 @@ public class FoodServiceImpl implements IFoodService {
     BeanUtils.copyProperties(foodDto, food);
     food.setImage(foodDto.getImage());
     if (foodDto.getProductType() != null) {
-      ProductType newProductType = productTypeRepository.findOne(foodDto.getProductType().getId());
+      ProductType newProductType = productTypeRepository.findById(foodDto.getProductType().getId()).get();
       food.setProductType(newProductType);
     }
 
     if (foodDto.getUom() != null) {
-      UnitOfMeasure newUom = unitOfMeasureRepository.findOne(foodDto.getUom().getId());
+      UnitOfMeasure newUom = unitOfMeasureRepository.findById(foodDto.getUom().getId()).get();
       food.setUom(newUom);
     }
     food.getFoodIngredients().clear();

@@ -56,7 +56,7 @@ class PaymentServiceImpl implements IPaymentService {
   public void saveOrUpdate(PaymentDto dto) {
     Payment payment = null;
     if (dto.getId() != null) {
-      payment = paymentRepository.findOne(dto.getId());
+      payment = paymentRepository.findById(dto.getId()).get();
     }
     if (payment == null) {
       payment = new Payment();
@@ -99,8 +99,8 @@ class PaymentServiceImpl implements IPaymentService {
 
   @Override
   public PaymentDto findOne(Long id) {
-    if (paymentRepository.exists(id)) {
-      Payment payment = paymentRepository.findOne(id);
+    if (paymentRepository.existsById(id)) {
+      Payment payment = paymentRepository.findById(id).get();
       return transformToDto(payment);
     }
     return null;
@@ -114,8 +114,8 @@ class PaymentServiceImpl implements IPaymentService {
   @Override
   public void inactivate(long[] ids) {
     for (long paymentId : ids) {
-      if (paymentRepository.exists(paymentId)) {
-        Payment payment = paymentRepository.findOne(paymentId);
+      if (paymentRepository.existsById(paymentId)) {
+        Payment payment = paymentRepository.findById(paymentId).get();
         payment.setActive(false);
         paymentRepository.save(payment);
       }
@@ -125,7 +125,7 @@ class PaymentServiceImpl implements IPaymentService {
   @Override
   public void activate(long[] ids) {
     for (long paymentId : ids) {
-      Payment payment = paymentRepository.findOne(paymentId);
+      Payment payment = paymentRepository.findById(paymentId).get();
       payment.setActive(true);
       paymentRepository.save(payment);
     }

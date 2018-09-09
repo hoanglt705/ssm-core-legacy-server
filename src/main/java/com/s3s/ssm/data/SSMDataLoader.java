@@ -30,7 +30,6 @@ import java.util.Set;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -267,7 +266,7 @@ public class SSMDataLoader {
 
   public static void main(String[] args) {
     // Not find solution to get class path from ssm-core.
-    DOMConfigurator.configure("src/main/resources/log4j.xml");
+//    DOMConfigurator.configure("src/main/resources/log4j.xml");
     logger.info("Starting data loader SSM...");
     Locale.setDefault(new Locale("vi"));
     try {
@@ -610,7 +609,7 @@ public class SSMDataLoader {
     waterPament.setAmount(300000L);
     payments.add(waterPament);
 
-    applicationContext.getBean(PaymentRepository.class).save(payments);
+    applicationContext.getBean(PaymentRepository.class).saveAll(payments);
   }
 
   public static List<PaymentContent> initPaymentContent() {
@@ -633,7 +632,7 @@ public class SSMDataLoader {
     waterContent.setPaymentType(PaymentType.PAY);
     paymentContents.add(waterContent);
 
-    applicationContext.getBean(PaymentContentRepository.class).save(paymentContents);
+    applicationContext.getBean(PaymentContentRepository.class).saveAll(paymentContents);
     return paymentContents;
   }
 
@@ -675,7 +674,7 @@ public class SSMDataLoader {
     supplierSugar.setFax("08 3811 8902");
     suppliers.add(supplierSugar);
 
-    applicationContext.getBean(SupplierRepository.class).save(suppliers);
+    applicationContext.getBean(SupplierRepository.class).saveAll(suppliers);
   }
 
   @Transactional
@@ -734,7 +733,7 @@ public class SSMDataLoader {
     employee.setImage(avatars.get(1).getData());
     employee.setRole(staffRole);
     employees.add(employee);
-    applicationContext.getBean(EmployeeRepository.class).save(employees);
+    applicationContext.getBean(EmployeeRepository.class).saveAll(employees);
     return employees;
   }
 
@@ -747,7 +746,7 @@ public class SSMDataLoader {
     UploadFile avatar2 = new UploadFile();
     avatar2.setData(getImageData("/testdata/avatar2.jpg"));
     avatars.add(avatar2);
-    applicationContext.getBean(UploadFileRepository.class).save(avatars);
+    applicationContext.getBean(UploadFileRepository.class).saveAll(avatars);
     return avatars;
   }
 
@@ -806,8 +805,8 @@ public class SSMDataLoader {
     admin.setRole(adminRole);
     salers.add(admin);
 
-    applicationContext.getBean(SecurityRoleRepository.class).save(roles);
-    applicationContext.getBean(SecurityUserRepository.class).save(salers);
+    applicationContext.getBean(SecurityRoleRepository.class).saveAll(roles);
+    applicationContext.getBean(SecurityUserRepository.class).saveAll(salers);
     return roles;
   }
 
@@ -822,7 +821,7 @@ public class SSMDataLoader {
     managerRole.setCode("MANAGER");
     managerRole.setName("Quan ly");
     roles.add(managerRole);
-    applicationContext.getBean(RoleRepository.class).save(roles);
+    applicationContext.getBean(RoleRepository.class).saveAll(roles);
     return roles;
   }
 
@@ -872,7 +871,7 @@ public class SSMDataLoader {
     shift3.setStartTime(shift3StartTime);
     shift3.setEndTime(shift3EndTime);
     shifts.add(shift3);
-    applicationContext.getBean(ShiftRepository.class).save(shifts);
+    applicationContext.getBean(ShiftRepository.class).saveAll(shifts);
     return shifts;
   }
 
@@ -914,7 +913,7 @@ public class SSMDataLoader {
     foodCategory.setName("Thuc an");
     uomCates.add(foodCategory);
 
-    applicationContext.getBean(UomCategoryRepository.class).save(uomCates);
+    applicationContext.getBean(UomCategoryRepository.class).saveAll(uomCates);
   }
 
   public static void initUOM() {
@@ -1028,7 +1027,7 @@ public class SSMDataLoader {
     cay.setUomCategory(foodCategory);
     cay.setExchangeRate(1F);
     uoms.add(cay);
-    applicationContext.getBean(UnitOfMeasureRepository.class).save(uoms);
+    applicationContext.getBean(UnitOfMeasureRepository.class).saveAll(uoms);
   }
 
   private static long getPriceOfMainSupplier(Material material) {
@@ -1795,7 +1794,7 @@ public class SSMDataLoader {
     yaourtImage.setData(getImageData("/testdata/yaourtIcon.jpg"));
     images.add(yaourtImage);
 
-    applicationContext.getBean(UploadFileRepository.class).save(images);
+    applicationContext.getBean(UploadFileRepository.class).saveAll(images);
     return images;
   }
 
@@ -1874,7 +1873,7 @@ public class SSMDataLoader {
     rawMaterialType.setImage(getImageData("/testdata/sugar.jpg"));
     productTypes.add(rawMaterialType);
 
-    applicationContext.getBean(ProductTypeRepository.class).save(productTypes);
+    applicationContext.getBean(ProductTypeRepository.class).saveAll(productTypes);
   }
 
   private static List<UploadFile> initProductTypeImage() {
@@ -1891,7 +1890,7 @@ public class SSMDataLoader {
     beerImage.setData(getImageData("/testdata/beerIcon.png"));
     images.add(beerImage);
 
-    applicationContext.getBean(UploadFileRepository.class).save(images);
+    applicationContext.getBean(UploadFileRepository.class).saveAll(images);
     return images;
   }
 
@@ -2023,7 +2022,7 @@ public class SSMDataLoader {
     inActiveArea.setName(INACTIVE_AREA);
     inActiveArea.setActive(false);
     areas.add(inActiveArea);
-    applicationContext.getBean(AreaRepository.class).save(areas);
+    applicationContext.getBean(AreaRepository.class).saveAll(areas);
     return areas;
   }
 

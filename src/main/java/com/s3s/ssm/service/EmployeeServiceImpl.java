@@ -32,7 +32,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
   public void saveOrUpdate(EmployeeDto dto) {
     Employee employee = null;
     if (dto.getId() != null) {
-      employee = employeeRepository.findOne(dto.getId());
+      employee = employeeRepository.findById(dto.getId()).get();
     }
     if (employee == null) {
       employee = new Employee();
@@ -41,7 +41,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     employee.setRole(roleRepository.findByCode(dto.getRole().getCode()));
     employee.getShifts().clear();
     for (ShiftDto shiftDto : dto.getShifts()) {
-      Shift newShift = shiftRepository.findOne(shiftDto.getId());
+      Shift newShift = shiftRepository.findById(shiftDto.getId()).get();
       employee.getShifts().add(newShift);
     }
     employeeRepository.save(employee);
@@ -54,8 +54,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
   @Override
   public EmployeeDto findOne(Long id) {
-    if (employeeRepository.exists(id)) {
-      Employee employee = employeeRepository.findOne(id);
+    if (employeeRepository.existsById(id)) {
+      Employee employee = employeeRepository.findById(id).get();
       return transformToDto(employee);
     }
     return null;
@@ -69,8 +69,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
   @Override
   public void inactivate(long[] ids) {
     for (long employeeId : ids) {
-      if (employeeRepository.exists(employeeId)) {
-        Employee employee = employeeRepository.findOne(employeeId);
+      if (employeeRepository.existsById(employeeId)) {
+        Employee employee = employeeRepository.findById(employeeId).get();
         employee.setActive(false);
         employeeRepository.save(employee);
       }
@@ -80,7 +80,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
   @Override
   public void activate(long[] ids) {
     for (long employeeId : ids) {
-      Employee employee = employeeRepository.findOne(employeeId);
+      Employee employee = employeeRepository.findById(employeeId).get();
       employee.setActive(true);
       employeeRepository.save(employee);
     }

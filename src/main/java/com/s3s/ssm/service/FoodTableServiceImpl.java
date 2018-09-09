@@ -83,8 +83,8 @@ class FoodTableServiceImpl implements IFoodTableService {
   @Override
   public void inactivate(long[] ids) {
     for (long foodTableId : ids) {
-      if (foodTableRepository.exists(foodTableId)) {
-        FoodTable foodTable = foodTableRepository.findOne(foodTableId);
+      if (foodTableRepository.existsById(foodTableId)) {
+        FoodTable foodTable = foodTableRepository.findById(foodTableId).get();
         foodTable.setActive(false);
         foodTableRepository.save(foodTable);
       }
@@ -94,8 +94,8 @@ class FoodTableServiceImpl implements IFoodTableService {
   @Override
   public void activate(long[] ids) {
     for (long foodTableId : ids) {
-      if (foodTableRepository.exists(foodTableId)) {
-        FoodTable foodTable = foodTableRepository.findOne(foodTableId);
+      if (foodTableRepository.existsById(foodTableId)) {
+        FoodTable foodTable = foodTableRepository.findById(foodTableId).get();
         foodTable.setActive(true);
         foodTableRepository.save(foodTable);
       }
@@ -106,7 +106,7 @@ class FoodTableServiceImpl implements IFoodTableService {
   public void saveOrUpdate(FoodTableDto dto) {
     FoodTable foodTable = null;
     if (dto.getId() != null) {
-      foodTable = foodTableRepository.findOne(dto.getId());
+      foodTable = foodTableRepository.findById(dto.getId()).get();
     }
     if (foodTable == null) {
       foodTable = new FoodTable();
@@ -115,7 +115,7 @@ class FoodTableServiceImpl implements IFoodTableService {
     foodTable.setName(dto.getName());
     foodTable.setSeatNum(dto.getSeatNum());
 
-    Area area = areaRepository.findOne(dto.getArea().getId());
+    Area area = areaRepository.findById(dto.getArea().getId()).get();
     if (foodTable.isPersisted()) {
       if (!area.getId().equals(foodTable.getArea().getId())) {
         foodTable.setArea(area);
@@ -133,7 +133,7 @@ class FoodTableServiceImpl implements IFoodTableService {
 
   @Override
   public FoodTableDto findOne(Long id) {
-    return transformToDto(foodTableRepository.findOne(id));
+    return transformToDto(foodTableRepository.findById(id).get());
   }
 
   @Override

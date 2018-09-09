@@ -39,7 +39,7 @@ public class RoleServiceImpl implements IRoleService {
   public void saveOrUpdate(RoleDto dto) {
     Role role = null;
     if (dto.getId() != null) {
-      role = roleRepository.findOne(dto.getId());
+      role = roleRepository.findById(dto.getId()).get();
     }
     if (role == null) {
       role = new Role();
@@ -57,8 +57,8 @@ public class RoleServiceImpl implements IRoleService {
 
   @Override
   public RoleDto findOne(Long id) {
-    if (roleRepository.exists(id)) {
-      Role role = roleRepository.findOne(id);
+    if (roleRepository.existsById(id)) {
+      Role role = roleRepository.findById(id).get();
       return transformToDto(role);
     }
     return null;
@@ -72,8 +72,8 @@ public class RoleServiceImpl implements IRoleService {
   @Override
   public void inactivate(long[] ids) {
     for (long roleId : ids) {
-      if (roleRepository.exists(roleId)) {
-        Role role = roleRepository.findOne(roleId);
+      if (roleRepository.existsById(roleId)) {
+        Role role = roleRepository.findById(roleId).get();
         role.setActive(false);
         roleRepository.save(role);
       }
@@ -83,7 +83,7 @@ public class RoleServiceImpl implements IRoleService {
   @Override
   public void activate(long[] ids) {
     for (long roleId : ids) {
-      Role role = roleRepository.findOne(roleId);
+      Role role = roleRepository.findById(roleId).get();
       role.setActive(true);
       roleRepository.save(role);
     }

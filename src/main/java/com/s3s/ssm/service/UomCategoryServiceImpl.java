@@ -28,7 +28,7 @@ public class UomCategoryServiceImpl implements IUomCategoryService {
   public void saveOrUpdate(UomCategoryDto dto) {
     UomCategory uomCategory = null;
     if (dto.getId() != null) {
-      uomCategory = uomCategoryRepository.findOne(dto.getId());
+      uomCategory = uomCategoryRepository.findById(dto.getId()).get();
     }
     if (uomCategory == null) {
       uomCategory = new UomCategory();
@@ -46,8 +46,8 @@ public class UomCategoryServiceImpl implements IUomCategoryService {
 
   @Override
   public UomCategoryDto findOne(Long id) {
-    if (uomCategoryRepository.exists(id)) {
-      UomCategory area = uomCategoryRepository.findOne(id);
+    if (uomCategoryRepository.existsById(id)) {
+      UomCategory area = uomCategoryRepository.findById(id).get();
       return transformToDto(area);
     }
     return null;
@@ -61,8 +61,8 @@ public class UomCategoryServiceImpl implements IUomCategoryService {
   @Override
   public void inactivate(long[] ids) {
     for (long areaId : ids) {
-      if (uomCategoryRepository.exists(areaId)) {
-        UomCategory area = uomCategoryRepository.findOne(areaId);
+      if (uomCategoryRepository.existsById(areaId)) {
+        UomCategory area = uomCategoryRepository.findById(areaId).get();
         area.setActive(false);
         uomCategoryRepository.save(area);
       }
@@ -72,7 +72,7 @@ public class UomCategoryServiceImpl implements IUomCategoryService {
   @Override
   public void activate(long[] ids) {
     for (long areaId : ids) {
-      UomCategory area = uomCategoryRepository.findOne(areaId);
+      UomCategory area = uomCategoryRepository.findById(areaId).get();
       area.setActive(true);
       uomCategoryRepository.save(area);
     }

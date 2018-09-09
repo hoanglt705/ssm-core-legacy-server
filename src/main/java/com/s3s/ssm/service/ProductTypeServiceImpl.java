@@ -59,8 +59,8 @@ class ProductTypeServiceImpl implements IProductTypeService {
 
   private void activate(long[] ids, boolean active) {
     for (long id : ids) {
-      if (productTypeRepository.exists(id)) {
-        ProductType productType = productTypeRepository.findOne(id);
+      if (productTypeRepository.existsById(id)) {
+        ProductType productType = productTypeRepository.findById(id).get();
         productType.setActive(active);
 
         Iterable<Product> products = productRepository.findByProductType(productType);
@@ -77,7 +77,7 @@ class ProductTypeServiceImpl implements IProductTypeService {
   public void saveOrUpdate(ProductTypeDto dto) {
     ProductType entity = null;
     if (dto.getId() != null) {
-      entity = productTypeRepository.findOne(dto.getId());
+      entity = productTypeRepository.findById(dto.getId()).get();
     }
     if (entity == null) {
       entity = new ProductType();
@@ -93,7 +93,7 @@ class ProductTypeServiceImpl implements IProductTypeService {
 
   @Override
   public ProductTypeDto findOne(Long id) {
-    return transformToDto(productTypeRepository.findOne(id));
+    return transformToDto(productTypeRepository.findById(id).get());
   }
 
   @Override

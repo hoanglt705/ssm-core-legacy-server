@@ -34,7 +34,7 @@ class UnitOfMeasureServiceImpl implements IUnitOfMeasureService {
   public void saveOrUpdate(UnitOfMeasureDto dto) {
     UnitOfMeasure uom = null;
     if (dto.getId() != null) {
-      uom = uomRepository.findOne(dto.getId());
+      uom = uomRepository.findById(dto.getId()).get();
     }
     if (uom == null) {
       uom = new UnitOfMeasure();
@@ -42,7 +42,7 @@ class UnitOfMeasureServiceImpl implements IUnitOfMeasureService {
 
     if (uom.isPersisted()) {
       if (uom.getUomCategory() != null && !uom.getUomCategory().getId().equals(dto.getUomCategory().getId())) {
-        UomCategory newUomCategory = uomCategoryRepository.findOne(dto.getUomCategory().getId());
+        UomCategory newUomCategory = uomCategoryRepository.findById(dto.getUomCategory().getId()).get();
         uom.setUomCategory(newUomCategory);
       }
       if (!uom.getIsBaseMeasure() && dto.getIsBaseMeasure()) {
@@ -66,8 +66,8 @@ class UnitOfMeasureServiceImpl implements IUnitOfMeasureService {
 
   @Override
   public UnitOfMeasureDto findOne(Long id) {
-    if (uomRepository.exists(id)) {
-      UnitOfMeasure area = uomRepository.findOne(id);
+    if (uomRepository.existsById(id)) {
+      UnitOfMeasure area = uomRepository.findById(id).get();
       return transformToDto(area);
     }
     return null;
@@ -81,8 +81,8 @@ class UnitOfMeasureServiceImpl implements IUnitOfMeasureService {
   @Override
   public void inactivate(long[] ids) {
     for (long areaId : ids) {
-      if (uomRepository.exists(areaId)) {
-        UnitOfMeasure area = uomRepository.findOne(areaId);
+      if (uomRepository.existsById(areaId)) {
+        UnitOfMeasure area = uomRepository.findById(areaId).get();
         area.setActive(false);
         uomRepository.save(area);
       }
@@ -92,7 +92,7 @@ class UnitOfMeasureServiceImpl implements IUnitOfMeasureService {
   @Override
   public void activate(long[] ids) {
     for (long areaId : ids) {
-      UnitOfMeasure area = uomRepository.findOne(areaId);
+      UnitOfMeasure area = uomRepository.findById(areaId).get();
       area.setActive(true);
       uomRepository.save(area);
     }
@@ -162,7 +162,7 @@ class UnitOfMeasureServiceImpl implements IUnitOfMeasureService {
   @Override
   public UnitOfMeasureDto getBaseUnitOfMeasure(UomCategoryDto uomCategory) {
     Iterable<UnitOfMeasure> uoms = uomRepository.findByUomCategory(
-            uomCategoryRepository.findOne(uomCategory.getId()));
+            uomCategoryRepository.findById(uomCategory.getId()).get());
     for (UnitOfMeasure unitOfMeasure : uoms) {
       if (unitOfMeasure.getIsBaseMeasure()) {
         return transformToDto(unitOfMeasure);

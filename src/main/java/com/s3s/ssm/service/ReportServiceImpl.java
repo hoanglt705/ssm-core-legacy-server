@@ -148,7 +148,7 @@ class ReportServiceImpl implements IReportService {
   public List<ProductIncomeDto> statisticProductIncome(List<String> products,
           Date fromDate, Date toDate) {
     List<ProductIncomeDto> dtos = new ArrayList<>();
-    Long interestAmtTotal = 0l;
+    long interestAmtTotal = 0l;
     for (String productCode : products) {
       ProductIncomeDto productIncome = getProductIncome(productCode, fromDate, toDate);
       dtos.add(productIncome);
@@ -476,7 +476,7 @@ class ReportServiceImpl implements IReportService {
             .where(expression).list(qInvoice);
 
     double result = 0d;
-    Material material = materialRepository.findOne(materialId);
+    Material material = materialRepository.findById(materialId).get();
     InvoiceUtil invoiceUtil = new InvoiceUtil();
     for (Invoice invoice : invoices) {
       result += invoiceUtil.findMaterialQuantityInInvoice(invoice,

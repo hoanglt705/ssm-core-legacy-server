@@ -44,7 +44,7 @@ public class AreaServiceImpl implements IAreaService {
   public void saveOrUpdate(AreaDto dto) {
     Area area = null;
     if (dto.getId() != null) {
-      area = areaRepository.findOne(dto.getId());
+      area = areaRepository.findById(dto.getId()).get();
     }
     if (area == null) {
       area = new Area();
@@ -62,8 +62,8 @@ public class AreaServiceImpl implements IAreaService {
 
   @Override
   public AreaDto findOne(Long id) {
-    if (areaRepository.exists(id)) {
-      Area area = areaRepository.findOne(id);
+    if (areaRepository.existsById(id)) {
+      Area area = areaRepository.findById(id).get();
       return transformToDto(area);
     }
     return null;
@@ -77,8 +77,8 @@ public class AreaServiceImpl implements IAreaService {
   @Override
   public void inactivate(long[] ids) {
     for (long areaId : ids) {
-      if (areaRepository.exists(areaId)) {
-        Area area = areaRepository.findOne(areaId);
+      if (areaRepository.existsById(areaId)) {
+        Area area = areaRepository.findById(areaId).get();
         area.setActive(false);
         areaRepository.save(area);
         Iterable<FoodTable> foodTables = foodTableRepository.findByArea(area);
@@ -86,7 +86,7 @@ public class AreaServiceImpl implements IAreaService {
           foodTable.setActive(false);
         }
 
-        foodTableRepository.save(foodTables);
+        foodTableRepository.saveAll(foodTables);
       }
     }
   }
@@ -94,14 +94,14 @@ public class AreaServiceImpl implements IAreaService {
   @Override
   public void activate(long[] ids) {
     for (long areaId : ids) {
-      Area area = areaRepository.findOne(areaId);
+      Area area = areaRepository.findById(areaId).get();
       area.setActive(true);
       areaRepository.save(area);
       Iterable<FoodTable> foodTables = foodTableRepository.findByArea(area);
       for (FoodTable foodTable : foodTables) {
         foodTable.setActive(true);
       }
-      foodTableRepository.save(foodTables);
+      foodTableRepository.saveAll(foodTables);
     }
 
   }

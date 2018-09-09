@@ -176,7 +176,7 @@ class InvoiceServiceImpl implements IInvoiceService {
     Invoice invoice = new Invoice();
     invoice.setCode(code);
     invoice.setInvoiceStatus(InvoiceStatus.BOOKING);
-    FoodTable foodTable = foodTableRepo.findOne(foodTableDto.getId());
+    FoodTable foodTable = foodTableRepo.findById(foodTableDto.getId()).get();
     invoice.setFoodTable(foodTable);
 
     invoiceDto.setId(invoiceRepository.save(invoice).getId());
@@ -185,7 +185,7 @@ class InvoiceServiceImpl implements IInvoiceService {
 
   @Override
   public void cancelInvoice(InvoiceDto invoiceDto) {
-    Invoice invoice = invoiceRepository.findOne(invoiceDto.getId());
+    Invoice invoice = invoiceRepository.findById(invoiceDto.getId()).get();
     invoice.setInvoiceStatus(InvoiceStatus.CANCEL);
     invoiceRepository.save(invoice);
     recoverInvoiceDetail(invoiceDto);
@@ -195,7 +195,7 @@ class InvoiceServiceImpl implements IInvoiceService {
     invoiceDto.getInvoiceDetails().stream().filter(detail -> !detail.getProduct().isFood())
             .forEach(detail -> {
               Long productId = detail.getProduct().getId();
-              Material material = materialRepo.findOne(productId);
+              Material material = materialRepo.findById(productId).get();
               material.setQuantityInStock(material.getQuantityInStock() + detail.getQuantity());
               materialRepo.save(material);
             });
@@ -240,7 +240,7 @@ class InvoiceServiceImpl implements IInvoiceService {
 
   @Override
   public void updateInvoiceDetail(InvoiceDto invoiceDto) {
-    Invoice invoice = invoiceRepository.findOne(invoiceDto.getId());
+    Invoice invoice = invoiceRepository.findById(invoiceDto.getId()).get();
     List<InvoiceDetail> newInvoiceDetails = new ArrayList<>();
     for (InvoiceDetailDto detailDto : invoiceDto.getInvoiceDetails()) {
       boolean existing = false;
@@ -261,7 +261,7 @@ class InvoiceServiceImpl implements IInvoiceService {
   private InvoiceDetail createNewInvoiceDetail(Invoice invoice, InvoiceDetailDto detailDto) {
     InvoiceDetail newDetail = new InvoiceDetail();
     Long productId = detailDto.getProduct().getId();
-    Product product = productRepo.findOne(productId);
+    Product product = productRepo.findById(productId).get();
     newDetail.setProduct(product);
     newDetail.setQuantity(detailDto.getQuantity());
     newDetail.setAmount(detailDto.getAmount());
@@ -273,8 +273,8 @@ class InvoiceServiceImpl implements IInvoiceService {
   @Override
   public InvoiceDto moveInvoice(InvoiceDto fromInvoiceDto, FoodTableDto toTableDto) {
     fromInvoiceDto.setFoodTable(toTableDto);
-    FoodTable table = foodTableRepo.findOne(toTableDto.getId());
-    Invoice invoice = invoiceRepository.findOne(fromInvoiceDto.getId());
+    FoodTable table = foodTableRepo.findById(toTableDto.getId()).get();
+    Invoice invoice = invoiceRepository.findById(fromInvoiceDto.getId()).get();
     invoice.setFoodTable(table);
     invoiceRepository.save(invoice);
     return fromInvoiceDto;
@@ -289,7 +289,7 @@ class InvoiceServiceImpl implements IInvoiceService {
       income = invoiceDto.getTotalPaymentAmount() - invoiceDto.getTotalReturnAmount();
     }
 
-    Invoice invoice = invoiceRepository.findOne(invoiceDto.getId());
+    Invoice invoice = invoiceRepository.findById(invoiceDto.getId()).get();
     invoice.setTotalAmount(invoiceDto.getTotalAmount());
     invoice.setTotalPaymentAmount(invoiceDto.getTotalPaymentAmount());
     invoice.setDiscount(invoiceDto.getDiscount());
@@ -306,7 +306,7 @@ class InvoiceServiceImpl implements IInvoiceService {
   public void updateProductQuantityInStore(Map<ProductDto, Integer> transaction) {
     transaction.forEach((productDto, quantity) -> {
       if (!productDto.isFood() && quantity > 0) {
-        Material material = materialRepo.findOne(productDto.getId());
+        Material material = materialRepo.findById(productDto.getId()).get();
         material.setQuantityInStock(material.getQuantityInStock() - quantity);
         materialRepo.save(material);
       }
@@ -321,8 +321,8 @@ class InvoiceServiceImpl implements IInvoiceService {
   @Override
   public void inactivate(long[] ids) {
     for (long id : ids) {
-      if (invoiceRepository.exists(id)) {
-        Invoice invoice = invoiceRepository.findOne(id);
+      if (invoiceRepository.existsById(id)) {
+        Invoice invoice = invoiceRepository.findById(id).get();
         invoice.setActive(false);
         invoiceRepository.save(invoice);
       }
@@ -332,8 +332,8 @@ class InvoiceServiceImpl implements IInvoiceService {
   @Override
   public void activate(long[] ids) {
     for (long id : ids) {
-      if (invoiceRepository.exists(id)) {
-        Invoice invoice = invoiceRepository.findOne(id);
+      if (invoiceRepository.existsById(id)) {
+        Invoice invoice = invoiceRepository.findById(id).get();
         invoice.setActive(true);
         invoiceRepository.save(invoice);
       }
@@ -344,7 +344,7 @@ class InvoiceServiceImpl implements IInvoiceService {
   public void saveOrUpdate(InvoiceDto dto) {
     Invoice invoice = null;
     if (dto.getId() != null) {
-      invoice = invoiceRepository.findOne(dto.getId());
+      invoice = invoiceRepository.findById(dto.getId()).get();
     }
     if (invoice == null) {
       invoice = new Invoice();
@@ -396,8 +396,8 @@ class InvoiceServiceImpl implements IInvoiceService {
 
   @Override
   public InvoiceDto findOne(Long id) {
-    if (invoiceRepository.exists(id)) {
-      Invoice invoice = invoiceRepository.findOne(id);
+    if (invoiceRepository.existsById(id)) {
+      Invoice invoice = invoiceRepository.findById(id).get();
       return transformToDto(invoice);
     }
     return null;

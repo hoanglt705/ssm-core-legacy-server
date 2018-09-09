@@ -39,7 +39,7 @@ public class ShiftServiceImpl implements IShiftService {
   public void saveOrUpdate(ShiftDto dto) {
     Shift shift = null;
     if (dto.getId() != null) {
-      shift = shiftRepository.findOne(dto.getId());
+      shift = shiftRepository.findById(dto.getId()).get();
     }
     if (shift == null) {
       shift = new Shift();
@@ -58,8 +58,8 @@ public class ShiftServiceImpl implements IShiftService {
 
   @Override
   public ShiftDto findOne(Long id) {
-    if (shiftRepository.exists(id)) {
-      Shift area = shiftRepository.findOne(id);
+    if (shiftRepository.existsById(id)) {
+      Shift area = shiftRepository.findById(id).get();
       return transformToDto(area);
     }
     return null;
@@ -73,8 +73,8 @@ public class ShiftServiceImpl implements IShiftService {
   @Override
   public void inactivate(long[] ids) {
     for (long areaId : ids) {
-      if (shiftRepository.exists(areaId)) {
-        Shift area = shiftRepository.findOne(areaId);
+      if (shiftRepository.existsById(areaId)) {
+        Shift area = shiftRepository.findById(areaId).get();
         area.setActive(false);
         shiftRepository.save(area);
       }
@@ -84,7 +84,7 @@ public class ShiftServiceImpl implements IShiftService {
   @Override
   public void activate(long[] ids) {
     for (long areaId : ids) {
-      Shift area = shiftRepository.findOne(areaId);
+      Shift area = shiftRepository.findById(areaId).get();
       area.setActive(true);
       shiftRepository.save(area);
     }

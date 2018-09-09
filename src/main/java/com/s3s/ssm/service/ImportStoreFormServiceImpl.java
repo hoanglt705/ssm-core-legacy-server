@@ -60,7 +60,7 @@ public class ImportStoreFormServiceImpl implements IImportStoreFormService {
   public void saveOrUpdate(ImportStoreFormDto dto) {
     ImportStoreForm importStoreForm = null;
     if (dto.getId() != null) {
-      importStoreForm = importStoreFormRepository.findOne(dto.getId());
+      importStoreForm = importStoreFormRepository.findById(dto.getId()).get();
     }
     if (importStoreForm == null) {
       importStoreForm = new ImportStoreForm();
@@ -115,8 +115,8 @@ public class ImportStoreFormServiceImpl implements IImportStoreFormService {
 
   @Override
   public ImportStoreFormDto findOne(Long id) {
-    if (importStoreFormRepository.exists(id)) {
-      ImportStoreForm importStoreForm = importStoreFormRepository.findOne(id);
+    if (importStoreFormRepository.existsById(id)) {
+      ImportStoreForm importStoreForm = importStoreFormRepository.findById(id).get();
       return transformToDto(importStoreForm);
     }
     return null;
@@ -130,8 +130,8 @@ public class ImportStoreFormServiceImpl implements IImportStoreFormService {
   @Override
   public void inactivate(long[] ids) {
     for (long id : ids) {
-      if (importStoreFormRepository.exists(id)) {
-        ImportStoreForm importStoreForm = importStoreFormRepository.findOne(id);
+      if (importStoreFormRepository.existsById(id)) {
+        ImportStoreForm importStoreForm = importStoreFormRepository.findById(id).get();
         importStoreForm.setActive(false);
         importStoreFormRepository.save(importStoreForm);
       }
@@ -141,7 +141,7 @@ public class ImportStoreFormServiceImpl implements IImportStoreFormService {
   @Override
   public void activate(long[] ids) {
     for (long id : ids) {
-      ImportStoreForm importStoreForm = importStoreFormRepository.findOne(id);
+      ImportStoreForm importStoreForm = importStoreFormRepository.findById(id).get();
       importStoreForm.setActive(true);
       importStoreFormRepository.save(importStoreForm);
     }

@@ -39,7 +39,7 @@ public class SupplierServiceImpl implements ISupplierService {
   public void saveOrUpdate(SupplierDto dto) {
     Supplier supplier = null;
     if (dto.getId() != null) {
-      supplier = supplierRepository.findOne(dto.getId());
+      supplier = supplierRepository.findById(dto.getId()).get();
     }
     if (supplier == null) {
       supplier = new Supplier();
@@ -71,8 +71,8 @@ public class SupplierServiceImpl implements ISupplierService {
 
   @Override
   public SupplierDto findOne(Long id) {
-    if (supplierRepository.exists(id)) {
-      Supplier supplier = supplierRepository.findOne(id);
+    if (supplierRepository.existsById(id)) {
+      Supplier supplier = supplierRepository.findById(id).get();
       return transformToDto(supplier);
     }
     return null;
@@ -86,8 +86,8 @@ public class SupplierServiceImpl implements ISupplierService {
   @Override
   public void inactivate(long[] ids) {
     for (long supplierId : ids) {
-      if (supplierRepository.exists(supplierId)) {
-        Supplier supplier = supplierRepository.findOne(supplierId);
+      if (supplierRepository.existsById(supplierId)) {
+        Supplier supplier = supplierRepository.findById(supplierId).get();
         supplier.setActive(false);
         supplierRepository.save(supplier);
       }
@@ -97,7 +97,7 @@ public class SupplierServiceImpl implements ISupplierService {
   @Override
   public void activate(long[] ids) {
     for (long supplierId : ids) {
-      Supplier supplier = supplierRepository.findOne(supplierId);
+      Supplier supplier = supplierRepository.findById(supplierId).get();
       supplier.setActive(true);
       supplierRepository.save(supplier);
     }

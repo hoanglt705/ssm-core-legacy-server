@@ -42,7 +42,7 @@ public class MaterialServiceImpl implements IMaterialService {
   public void saveOrUpdate(MaterialDto dto) {
     Material material = null;
     if (dto.getId() != null) {
-      material = materialRepository.findOne(dto.getId());
+      material = materialRepository.findById(dto.getId()).get();
     }
     if (material == null) {
       material = new Material();
@@ -58,8 +58,8 @@ public class MaterialServiceImpl implements IMaterialService {
 
   @Override
   public MaterialDto findOne(Long id) {
-    if (materialRepository.exists(id)) {
-      Material area = materialRepository.findOne(id);
+    if (materialRepository.existsById(id)) {
+      Material area = materialRepository.findById(id).get();
       return transformToDto(area);
     }
     return null;
@@ -73,8 +73,8 @@ public class MaterialServiceImpl implements IMaterialService {
   @Override
   public void inactivate(long[] ids) {
     for (long id : ids) {
-      if (materialRepository.exists(id)) {
-        Material area = materialRepository.findOne(id);
+      if (materialRepository.existsById(id)) {
+        Material area = materialRepository.findById(id).get();
         area.setActive(false);
         materialRepository.save(area);
       }
@@ -84,7 +84,7 @@ public class MaterialServiceImpl implements IMaterialService {
   @Override
   public void activate(long[] ids) {
     for (long id : ids) {
-      Material area = materialRepository.findOne(id);
+      Material area = materialRepository.findById(id).get();
       area.setActive(true);
       materialRepository.save(area);
     }
@@ -109,11 +109,11 @@ public class MaterialServiceImpl implements IMaterialService {
     BeanUtils.copyProperties(materialDto, material);
     if (material.isPersisted()
             && !materialDto.getProductType().getId().equals(material.getProductType().getId())) {
-      ProductType newProductType = productTypeRepository.findOne(materialDto.getProductType().getId());
+      ProductType newProductType = productTypeRepository.findById(materialDto.getProductType().getId()).get();
       material.setProductType(newProductType);
     }
     if (material.isPersisted() && !materialDto.getUom().getId().equals(material.getUom().getId())) {
-      UnitOfMeasure newUom = unitOfMeasureRepository.findOne(materialDto.getUom().getId());
+      UnitOfMeasure newUom = unitOfMeasureRepository.findById(materialDto.getUom().getId()).get();
       material.setUom(newUom);
     }
     material.getImportPrices().clear();

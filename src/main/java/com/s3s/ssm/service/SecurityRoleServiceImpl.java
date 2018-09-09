@@ -39,7 +39,7 @@ public class SecurityRoleServiceImpl implements ISecurityRoleService {
   public void saveOrUpdate(SecurityRoleDto dto) {
     SecurityRole role = null;
     if (dto.getId() != null) {
-      role = roleRepository.findOne(dto.getId());
+      role = roleRepository.findById(dto.getId()).get();
     }
     if (role == null) {
       role = new SecurityRole();
@@ -57,8 +57,8 @@ public class SecurityRoleServiceImpl implements ISecurityRoleService {
 
   @Override
   public SecurityRoleDto findOne(Long id) {
-    if (roleRepository.exists(id)) {
-      SecurityRole role = roleRepository.findOne(id);
+    if (roleRepository.existsById(id)) {
+      SecurityRole role = roleRepository.findById(id).get();
       return transformToDto(role);
     }
     return null;
@@ -72,8 +72,8 @@ public class SecurityRoleServiceImpl implements ISecurityRoleService {
   @Override
   public void inactivate(long[] ids) {
     for (long roleId : ids) {
-      if (roleRepository.exists(roleId)) {
-        SecurityRole role = roleRepository.findOne(roleId);
+      if (roleRepository.existsById(roleId)) {
+        SecurityRole role = roleRepository.findById(roleId).get();
         role.setActive(false);
         roleRepository.save(role);
       }
@@ -83,7 +83,7 @@ public class SecurityRoleServiceImpl implements ISecurityRoleService {
   @Override
   public void activate(long[] ids) {
     for (long roleId : ids) {
-      SecurityRole role = roleRepository.findOne(roleId);
+      SecurityRole role = roleRepository.findById(roleId).get();
       role.setActive(true);
       roleRepository.save(role);
     }

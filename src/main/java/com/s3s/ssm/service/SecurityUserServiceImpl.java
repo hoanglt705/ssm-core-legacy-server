@@ -27,7 +27,7 @@ public class SecurityUserServiceImpl implements ISecurityUserService {
   public void saveOrUpdate(SecurityUserDto dto) {
     SecurityUser employee = null;
     if (dto.getId() != null) {
-      employee = securityUserRepository.findOne(dto.getId());
+      employee = securityUserRepository.findById(dto.getId()).get();
     }
     if (employee == null) {
       employee = new SecurityUser();
@@ -43,8 +43,8 @@ public class SecurityUserServiceImpl implements ISecurityUserService {
 
   @Override
   public SecurityUserDto findOne(Long id) {
-    if (securityUserRepository.exists(id)) {
-      SecurityUser employee = securityUserRepository.findOne(id);
+    if (securityUserRepository.existsById(id)) {
+      SecurityUser employee = securityUserRepository.findById(id).get();
       return transformToDto(employee);
     }
     return null;
@@ -58,8 +58,8 @@ public class SecurityUserServiceImpl implements ISecurityUserService {
   @Override
   public void inactivate(long[] ids) {
     for (long employeeId : ids) {
-      if (securityUserRepository.exists(employeeId)) {
-        SecurityUser employee = securityUserRepository.findOne(employeeId);
+      if (securityUserRepository.existsById(employeeId)) {
+        SecurityUser employee = securityUserRepository.findById(employeeId).get();
         employee.setActive(false);
         securityUserRepository.save(employee);
       }
@@ -69,7 +69,7 @@ public class SecurityUserServiceImpl implements ISecurityUserService {
   @Override
   public void activate(long[] ids) {
     for (long employeeId : ids) {
-      SecurityUser employee = securityUserRepository.findOne(employeeId);
+      SecurityUser employee = securityUserRepository.findById(employeeId).get();
       employee.setActive(true);
       securityUserRepository.save(employee);
     }

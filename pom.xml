@@ -10,7 +10,7 @@
 	<packaging>jar</packaging>
 	
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>1.10</java.version>
 		<hessian.version>4.0.38</hessian.version>
 		<querydsl.version>3.6.0</querydsl.version>
 		<ehcache.version>2.8.2</ehcache.version>
@@ -29,7 +29,7 @@
 	<parent>
     	<groupId>org.springframework.boot</groupId>
     	<artifactId>spring-boot-starter-parent</artifactId>
-    	<version>1.4.7.RELEASE</version>
+    	<version>2.0.4.RELEASE</version>
 	</parent>
 	
 	<dependencies>
@@ -104,13 +104,18 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang3.version}</version>
 		</dependency>
+		<dependency>
+		    <groupId>javax.xml.bind</groupId>
+		    <artifactId>jaxb-api</artifactId>
+		    <version>2.3.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>1.4.7.RELEASE</version>
+                <version>2.0.4.RELEASE</version>
 			    <configuration>
 			        <mainClass>com.s3s.ssm.config.ApplicationConfig</mainClass>
 			    </configuration>

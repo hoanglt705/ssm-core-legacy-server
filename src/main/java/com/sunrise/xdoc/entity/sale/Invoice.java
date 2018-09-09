@@ -16,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.s3s.ssm.dto.InvoiceStatus;
 import com.s3s.ssm.entity.AbstractActiveCodeOLObject;
@@ -43,7 +42,6 @@ public class Invoice extends AbstractActiveCodeOLObject {
   private List<InvoiceDetail> invoiceDetails = new ArrayList<InvoiceDetail>();
 
   @Column(name = "created_date")
-  @NotNull
   public Date getCreatedDate() {
     return createdDate;
   }
@@ -81,7 +79,6 @@ public class Invoice extends AbstractActiveCodeOLObject {
   }
 
   @Column(name = "invoice_status")
-  @NotNull
   @Enumerated(EnumType.STRING)
   public InvoiceStatus getInvoiceStatus() {
     return invoiceStatus;

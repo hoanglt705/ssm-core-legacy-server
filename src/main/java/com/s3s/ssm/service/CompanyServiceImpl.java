@@ -60,7 +60,7 @@ class CompanyServiceImpl implements ICompanyService {
   public void saveOrUpdate(CompanyDto dto) {
     Company company = null;
     if (dto.getId() != null) {
-      company = companyRepo.findOne(dto.getId());
+      company = companyRepo.findById(dto.getId()).get();
     }
     if (company == null) {
       company = new Company();
@@ -92,8 +92,8 @@ class CompanyServiceImpl implements ICompanyService {
 
   @Override
   public CompanyDto findOne(Long id) {
-    if (companyRepo.exists(id)) {
-      Company company = companyRepo.findOne(id);
+    if (companyRepo.existsById(id)) {
+      Company company = companyRepo.findById(id).get();
       return transformToDto(company);
     }
     return null;

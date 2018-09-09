@@ -29,7 +29,7 @@
 	<parent>
     	<groupId>org.springframework.boot</groupId>
     	<artifactId>spring-boot-starter-parent</artifactId>
-    	<version>1.2.3.RELEASE</version>
+    	<version>1.4.7.RELEASE</version>
 	</parent>
 	
 	<dependencies>
@@ -110,7 +110,7 @@
 			<plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>1.2.3.RELEASE</version>
+                <version>1.4.7.RELEASE</version>
 			    <configuration>
 			        <mainClass>com.s3s.ssm.config.ApplicationConfig</mainClass>
 			    </configuration>

@@ -33,7 +33,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.s3s.ssm.config.ServerContextProvider;
 import com.s3s.ssm.dto.InvoiceStatus;
 import com.s3s.ssm.dto.PaymentMode;
 import com.s3s.ssm.dto.PaymentType;
@@ -2051,5 +2050,7 @@ public class SSMDataLoader {
     company.setTableViewAlertTime(calendar.getTime());
 
     applicationContext.getBean(CompanyRepository.class).save(company);
+    
+    System.out.println("Count company " + applicationContext.getBean(CompanyRepository.class).count());
   }
 }

@@ -14,20 +14,27 @@
  * limitations under the License.
  */
 
-package com.s3s.ssm.config;
+package com.s3s.ssm.data;
+
+import javax.sql.DataSource;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@Import({PosServiceConfig.class, ManageServiceConfig.class, ReportServiceConfig.class,
-    DashboardServiceConfig.class, TimelineServiceConfig.class, ServiceCacheConfig.class})
 @EnableJpaRepositories(basePackages = "com.s3s.ssm.repo")
 @EntityScan({"com.sunrise.xdoc.entity", "com.s3s.ssm.security.entity"})
 @SpringBootApplication
 public class ApplicationConfig {
+	
+	@Bean
+	public DataSource dataSource() {
+		return DataSourceBuilder.create().url("jdbc:mysql://localhost:3306/ssm-db?useSSL=false")
+				.driverClassName("com.mysql.jdbc.Driver").username("root").password("rootpass").build();
+	}
   public static void main(String[] args) {
 	  SpringApplication.run(ApplicationConfig.class, args);
   }

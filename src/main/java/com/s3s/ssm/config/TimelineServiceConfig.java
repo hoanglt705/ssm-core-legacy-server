@@ -29,7 +29,6 @@ import com.s3s.ssm.service.ITimelineService;
 @Configuration
 @ComponentScan(basePackages = "com.s3s.ssm.service")
 @EnableAutoConfiguration
-@Import(InfrastructureConfig.class)
 public class TimelineServiceConfig {
   @Autowired
   private ITimelineService timelineService;

@@ -29,7 +29,6 @@ import com.s3s.ssm.service.IProductService;
 @Configuration
 @ComponentScan(basePackages = "com.s3s.ssm.service")
 @EnableAutoConfiguration
-@Import(InfrastructureConfig.class)
 public class KitchenServiceConfig {
   @Autowired
   private IProductService productService;

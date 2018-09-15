@@ -51,7 +51,6 @@ import com.s3s.ssm.service.IUomCategoryService;
 @Configuration
 @ComponentScan(basePackages = "com.s3s.ssm.service")
 @EnableAutoConfiguration
-@Import(InfrastructureConfig.class)
 @EnableJpaRepositories(basePackages = "com.s3s.ssm.repo")
 public class ManageServiceConfig {
   @Autowired

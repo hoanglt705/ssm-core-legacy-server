@@ -39,10 +39,10 @@ class CompanyServiceImpl implements ICompanyService {
 
   @Override
   public CompanyDto getCompany() {
-    Company company = Lists.newArrayList(companyRepo.findAll()).get(0);
-    if (company != null) {
+    List<Company> companies = Lists.newArrayList(companyRepo.findAll());
+    if (!companies.isEmpty()) {
       CompanyDto companyDto = new CompanyDto();
-      BeanUtils.copyProperties(company, companyDto);
+      BeanUtils.copyProperties(companies.get(0), companyDto);
       return companyDto;
     }
     return null;

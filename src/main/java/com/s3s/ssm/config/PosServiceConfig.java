@@ -32,7 +32,6 @@ import com.s3s.ssm.service.ISequenceNumberService;
 @Configuration
 @ComponentScan(basePackages = "com.s3s.ssm.service")
 @EnableAutoConfiguration
-@Import(InfrastructureConfig.class)
 public class PosServiceConfig {
   @Autowired
   private IProductService productService;

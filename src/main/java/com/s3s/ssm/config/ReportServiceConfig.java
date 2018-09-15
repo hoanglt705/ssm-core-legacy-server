@@ -30,7 +30,6 @@ import com.s3s.ssm.service.IReportService;
 @Configuration
 @ComponentScan(basePackages = "com.s3s.ssm.service")
 @EnableAutoConfiguration
-@Import(InfrastructureConfig.class)
 public class ReportServiceConfig {
   @Autowired
   private IReportService reportService;

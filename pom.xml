@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.s3s.ssm</groupId>
 	<artifactId>ssm-core-legacy</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 	<name>SSM Core Legacy Service</name>
 	<description>SSM Core Legacy Service</description>
 	<packaging>jar</packaging>
 	
 	<properties>
-		<java.version>1.10</java.version>
+		<java.version>1.8</java.version>
 		<hessian.version>4.0.38</hessian.version>
 		<querydsl.version>3.6.0</querydsl.version>
 		<ehcache.version>2.8.2</ehcache.version>
@@ -59,8 +59,8 @@
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

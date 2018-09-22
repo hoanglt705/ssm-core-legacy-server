@@ -21,7 +21,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.remoting.caucho.HessianServiceExporter;
 
 import com.s3s.ssm.service.IDashboardService;
@@ -29,7 +28,6 @@ import com.s3s.ssm.service.IDashboardService;
 @Configuration
 @ComponentScan(basePackages = "com.s3s.ssm.service")
 @EnableAutoConfiguration
-@Import(InfrastructureConfig.class)
 public class DashboardServiceConfig {
   @Autowired
   private IDashboardService dashboardService;

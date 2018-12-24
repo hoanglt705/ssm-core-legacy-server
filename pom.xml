@@ -15,7 +15,6 @@
 		<querydsl.version>3.6.0</querydsl.version>
 		<ehcache.version>2.8.2</ehcache.version>
 		<myMavenRepo.read.url>https://mymavenrepo.com/repo/0gYeR1uVbGBd8IBUlAOb/</myMavenRepo.read.url>
-		<myMavenRepo.write.url>https://mymavenrepo.com/repo/EsiHd95I3nhSKhiViDip/</myMavenRepo.write.url>
     	<commons-lang3.version>3.3.2</commons-lang3.version>
 	</properties>
 	
@@ -150,13 +149,10 @@
 	</build>
 	
 	<distributionManagement>
-        <repository>
-            <id>myMavenRepo.write</id>
-            <url>${myMavenRepo.write.url}</url>
-        </repository>
-        <snapshotRepository>
-            <id>myMavenRepo.write</id>
-            <url>${myMavenRepo.write.url}</url>
-        </snapshotRepository>
-    </distributionManagement>
+	    <repository>
+	      <id>ssm</id>
+	      <name>Internal Snapshot Repository</name>
+	      <url>http://52.193.209.175/repository/snapshots</url>
+	    </repository>
+	</distributionManagement>
 </project>
